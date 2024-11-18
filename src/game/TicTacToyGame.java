@@ -9,7 +9,7 @@ public class TicTacToyGame {
     public static final char EMPTY = ' ';
     private Logger logger = LogManager.getLogger(TicTacToyGame.class);
     private char[][] board;
-    private char currentPlayer;
+    public static char currentPlayer;
 
     public TicTacToyGame() {
         currentPlayer = 'X';
@@ -133,5 +133,9 @@ public class TicTacToyGame {
         }
         logger.debug("Пустых ячеек нет");
         return true;
+    }
+
+    public char[][] getBoard() {
+        return this.board;
     }
 }
