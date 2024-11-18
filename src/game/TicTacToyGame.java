@@ -1,13 +1,15 @@
+package game;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
 public class TicTacToyGame {
-    private static final char EMPTY = ' ';
+    public static final char EMPTY = ' ';
     private Logger logger = LogManager.getLogger(TicTacToyGame.class);
     private char[][] board;
-    private char currentPlayer;
+    public static char currentPlayer;
 
     public TicTacToyGame() {
         currentPlayer = 'X';
@@ -131,5 +133,9 @@ public class TicTacToyGame {
         }
         logger.debug("Пустых ячеек нет");
         return true;
+    }
+
+    public char[][] getBoard() {
+        return this.board;
     }
 }

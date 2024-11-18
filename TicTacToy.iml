@@ -3,10 +3,12 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="log4j-core-2.23.1" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="00329a81-eaf9-4289-a362-37bd8de148e5" />

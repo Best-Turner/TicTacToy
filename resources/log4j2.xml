@@ -6,16 +6,14 @@
         </Console>
         <File name="MAIN" fileName="logs/main.log">
         </File>
-        <File name="DEBUG_LOG" fileName="logs/debug.log">
+        <File name="DEBUG_LOG" fileName="logs/debug.log" append="false">
             <PatternLayout pattern="%d [%t] %p %c - %m%n"/>
         </File>
     </Appenders>
     <Loggers>
         <Root level="debug">
-            <AppenderRef ref="CONSOLE"/>
-        </Root>
-        <Logger name="org.example" level="DEBUG">
             <AppenderRef ref="DEBUG_LOG"/>
-        </Logger>
+        </Root>
+
     </Loggers>
 </Configuration>
