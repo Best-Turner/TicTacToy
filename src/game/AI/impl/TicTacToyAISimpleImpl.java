@@ -1,25 +1,28 @@
-package AI.impl;
+package game.AI.impl;
 
-import AI.TicTacToyAI;
+import game.AI.TicTacToyAI;
 import game.TicTacToyGame;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class TicTacToyAISimpleImpl implements TicTacToyAI {
 
+    private final TicTacToyGame game;
     private Random random;
 
-    public TicTacToyAISimpleImpl() {
+    public TicTacToyAISimpleImpl(TicTacToyGame game) {
+        this.game = game;
         random = new Random();
     }
 
     @Override
-    public int[] getNextMove(char[][] board) {
+    public int[] getNextMove() {
         boolean isFirstMove = true;
         int col, row;
-        for (char[] chars : board) {
-            for (char aChar : chars) {
-                if (aChar != TicTacToyGame.EMPTY) {
+        for (String[] chars : game.getBoard()) {
+            for (String aChar : chars) {
+                if (aChar.equals(TicTacToyGame.EMPTY)) {
                     isFirstMove = false;
                     break;
                 }
@@ -38,7 +41,7 @@ public class TicTacToyAISimpleImpl implements TicTacToyAI {
             row = random.nextInt(3);
             col = random.nextInt(3);
 
-            if (board[row][col] == TicTacToyGame.EMPTY) {
+            if (Objects.equals(game.getBoard()[row][col], TicTacToyGame.EMPTY)) {
                 return new int[]{row, col};
             }
         }

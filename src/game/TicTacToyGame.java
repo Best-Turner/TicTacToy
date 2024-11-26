@@ -6,14 +6,13 @@ import org.apache.logging.log4j.Logger;
 import java.util.Arrays;
 
 public class TicTacToyGame {
-    public static final char EMPTY = ' ';
+    public static final String EMPTY = "";
+    public static String currentPlayer;
     private Logger logger = LogManager.getLogger(TicTacToyGame.class);
-    private char[][] board;
-    public static char currentPlayer;
+    private String[][] board;
 
     public TicTacToyGame() {
-        currentPlayer = 'X';
-        initEmptyBoard();
+        currentPlayer = "X";
         logger.debug("Класс {} создан", TicTacToyGame.class);
     }
 
@@ -31,7 +30,7 @@ public class TicTacToyGame {
 
     private boolean ifEmptyCells(int row, int col) {
         logger.debug("Проверка ячейки {}, {}", row, col);
-        return board[row][col] == EMPTY;
+        return board[row][col].equals(EMPTY);
     }
 
     public boolean checkWinner() {
@@ -42,41 +41,29 @@ public class TicTacToyGame {
 
     public void switchPlayer() {
         logger.debug("Смена текущего игрока - {}", currentPlayer);
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        currentPlayer = (currentPlayer.equals("X")) ? "O" : "X";
         logger.debug("Текущего игрок - {}", currentPlayer);
     }
 
-    public char getCurrentPlayer() {
+    public String getCurrentPlayer() {
         logger.debug("Получить текущего игрока {}", currentPlayer);
         return currentPlayer;
     }
 
-    private void initEmptyBoard() {
+    public void initEmptyBoard() {
         logger.debug("Инициализация игровой доски 3X3");
-        board = new char[3][3];
-        for (int i = 0; i < board.length; i++) {
-            Arrays.fill(board[i], EMPTY);
+        board = new String[3][3];
+        for (String[] strings : board) {
+            Arrays.fill(strings, EMPTY);
         }
-    }
-
-    public void printBoard() {
-        logger.debug("Вывести текущую доску на экран");
-        for (char[] chars : board) {
-            System.out.println("--- ".repeat(board.length));
-            for (char aChar : chars) {
-                System.out.print(aChar + " | ");
-            }
-            System.out.println();
-        }
-        System.out.println("--- ".repeat(board.length));
     }
 
     private boolean horizontalCheck() {
         logger.debug("Проверка совпадений по горизонтали");
-        for (char[] chars : board) {
-            char firstElement = chars[0];
+        for (String[] chars : board) {
+            String firstElement = chars[0];
             for (int col = 0; col < chars.length; col++) {
-                if (firstElement == EMPTY || firstElement != chars[col]) {
+                if (firstElement.equals(EMPTY) || !(firstElement.equals(chars[col]))) {
                     break;
                 }
                 if (col == chars.length - 1) {
@@ -92,9 +79,9 @@ public class TicTacToyGame {
     private boolean verticalCheck() {
         logger.debug("Проверка совпадений по вертикали");
         for (int col = 0; col < board[0].length; col++) {
-            char firstElement = board[0][col];
+            String firstElement = board[0][col];
             for (int row = 0; row < board.length; row++) {
-                if (firstElement == EMPTY || firstElement != board[row][col]) {
+                if (firstElement.equals(EMPTY) || !(firstElement.equals(board[row][col]))) {
                     break;
                 }
                 if (row == board.length - 1) {
@@ -109,11 +96,11 @@ public class TicTacToyGame {
 
     private boolean diagonalCheck() {
         logger.debug("Проверка совпадений по диагонали");
-        if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != EMPTY) {
+        if (board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2]) && !(board[0][0].equals(EMPTY))) {
             logger.debug("Есть три совпадения по главной диагонали");
             return true;
         }
-        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[2][0] != EMPTY) {
+        if (board[0][2].equals(board[1][1]) && board[1][1].equals(board[2][0]) && !(board[2][0].equals(EMPTY))) {
             logger.debug("Есть три совпадения по побочной диагонали");
             return true;
         }
@@ -123,9 +110,9 @@ public class TicTacToyGame {
 
     public boolean areAllCellsFilled() {
         logger.debug("Проверка: все ли ячейки заполнены");
-        for (char[] chars : board) {
-            for (char aChar : chars) {
-                if (aChar == EMPTY) {
+        for (String[] chars : board) {
+            for (String aChar : chars) {
+                if (aChar.equals(EMPTY)) {
                     logger.debug("Есть пусты ячейки");
                     return false;
                 }
@@ -135,7 +122,12 @@ public class TicTacToyGame {
         return true;
     }
 
-    public char[][] getBoard() {
+    public String[][] getBoard() {
         return this.board;
+    }
+
+    public void restart() {
+        currentPlayer = "X";
+        initEmptyBoard();
     }
 }
