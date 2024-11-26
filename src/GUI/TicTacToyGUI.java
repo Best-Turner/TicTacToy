@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class TicTacToyGUI {
     private Logger logger = LogManager.getLogger(TicTacToyGUI.class);
@@ -19,9 +20,11 @@ public class TicTacToyGUI {
     private GameController controller;
     private TicTacToyAI toyAI;
 
+
     public TicTacToyGUI(GameController controller, TicTacToyAI toyAI) {
         this.controller = controller;
         this.toyAI = toyAI;
+
         frame = new JFrame("Крестики нолики");
         frame.setSize(200, 200);
         frame.setLocationRelativeTo(null);
@@ -98,6 +101,26 @@ public class TicTacToyGUI {
         }
     }
 
+    public void paintWinningCells(int[][] array) {
+        int temp1, temp2;
+        Color color = getColor();
+        for (int row = 0; row < array.length; row++) {
+            temp1 = array[row][0];
+            temp2 = array[row][1];
+            buttons[temp1][temp2].setBackground(color);
+        }
+        panel.repaint();
+    }
+
+    public void paintAllCellsRandomColor() {
+        for (JButton[] row : buttons) {
+            for (JButton col : row) {
+              col.setBackground(getColor());
+            }
+        }
+        panel.repaint();
+    }
+
 
     public void updateBoard(String[][] board) {
         logger.debug("Сверить отображаемые кнопки с массивом игры");
@@ -113,8 +136,19 @@ public class TicTacToyGUI {
         logger.debug("Обновить панель");
     }
 
+
+
     public void setController(GameController controller) {
         this.controller = controller;
+    }
+
+    private Color getColor() {
+        Random random = new Random();
+        int c1, c2, c3;
+        c1 = random.nextInt(255);
+        c2 = random.nextInt(255);
+        c3 = random.nextInt(255);
+        return new Color(c1, c2, c3);
     }
 
     public JFrame getFrame() {
@@ -131,7 +165,6 @@ public class TicTacToyGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //logger.debug("Нажатие кнопки игроком {}, координаты {}, {}",  row,col);
             logger.debug("Нажатие кнопки");
             if (controller.handlePlayerMove(row, col)) {
                 int[] nextMove = toyAI.getNextMove();

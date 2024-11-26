@@ -10,8 +10,10 @@ public class TicTacToyGame {
     public static String currentPlayer;
     private Logger logger = LogManager.getLogger(TicTacToyGame.class);
     private String[][] board;
+    private int[][] winnerCells;
 
     public TicTacToyGame() {
+        winnerCells = new int[3][2];
         currentPlayer = "X";
         logger.debug("Класс {} создан", TicTacToyGame.class);
     }
@@ -60,16 +62,24 @@ public class TicTacToyGame {
 
     private boolean horizontalCheck() {
         logger.debug("Проверка совпадений по горизонтали");
-        for (String[] chars : board) {
-            String firstElement = chars[0];
-            for (int col = 0; col < chars.length; col++) {
-                if (firstElement.equals(EMPTY) || !(firstElement.equals(chars[col]))) {
+        for (int row = 0; row < board.length; row++) {
+            String firstElement = board[row][0];
+            if (firstElement.equals(EMPTY)) {
+                continue; // Пропустить пустую строку
+            }
+
+            boolean isWinningRow = true;
+            for (int col = 1; col < board[row].length; col++) {
+                if (!firstElement.equals(board[row][col])) {
+                    isWinningRow = false;
                     break;
                 }
-                if (col == chars.length - 1) {
-                    logger.debug("Есть три совпадения по горизонтали");
-                    return true;
-                }
+            }
+
+            if (isWinningRow) {
+                logger.debug("Есть три совпадения по горизонтали");
+                setWinnerCells(row, 0, row, 1, row, 2); // Установка координат выигрышных ячеек
+                return true;
             }
         }
         logger.debug("Нет совпадений по горизонтали");
@@ -80,14 +90,22 @@ public class TicTacToyGame {
         logger.debug("Проверка совпадений по вертикали");
         for (int col = 0; col < board[0].length; col++) {
             String firstElement = board[0][col];
-            for (int row = 0; row < board.length; row++) {
-                if (firstElement.equals(EMPTY) || !(firstElement.equals(board[row][col]))) {
+            if (firstElement.equals(EMPTY)) {
+                continue; // Пропустить пустой столбец
+            }
+
+            boolean isWinningColumn = true;
+            for (int row = 1; row < board.length; row++) {
+                if (!firstElement.equals(board[row][col])) {
+                    isWinningColumn = false;
                     break;
                 }
-                if (row == board.length - 1) {
-                    logger.debug("Есть три совпадения по вертикали");
-                    return true;
-                }
+            }
+
+            if (isWinningColumn) {
+                logger.debug("Есть три совпадения по вертикали");
+                setWinnerCells(0, col, 1, col, 2, col); // Установка координат выигрышных ячеек
+                return true;
             }
         }
         logger.debug("Нет совпадений по вертикали");
@@ -96,16 +114,31 @@ public class TicTacToyGame {
 
     private boolean diagonalCheck() {
         logger.debug("Проверка совпадений по диагонали");
-        if (board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2]) && !(board[0][0].equals(EMPTY))) {
+
+        // Проверка главной диагонали
+        if (!board[0][0].equals(EMPTY) && board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2])) {
+            setWinnerCells(0, 0, 1, 1, 2, 2);
             logger.debug("Есть три совпадения по главной диагонали");
             return true;
         }
-        if (board[0][2].equals(board[1][1]) && board[1][1].equals(board[2][0]) && !(board[2][0].equals(EMPTY))) {
+
+        // Проверка побочной диагонали
+        if (!board[0][2].equals(EMPTY) && board[0][2].equals(board[1][1]) && board[1][1].equals(board[2][0])) {
+            setWinnerCells(0, 2, 1, 1, 2, 0);
             logger.debug("Есть три совпадения по побочной диагонали");
             return true;
         }
-        logger.debug("Нет совпадений по диагонали");
+
         return false;
+    }
+
+    private void setWinnerCells(int row1, int col1, int row2, int col2, int row3, int col3) {
+        winnerCells[0][0] = row1;
+        winnerCells[0][1] = col1;
+        winnerCells[1][0] = row2;
+        winnerCells[1][1] = col2;
+        winnerCells[2][0] = row3;
+        winnerCells[2][1] = col3;
     }
 
     public boolean areAllCellsFilled() {
@@ -124,6 +157,10 @@ public class TicTacToyGame {
 
     public String[][] getBoard() {
         return this.board;
+    }
+
+    public int[][] getWinnerCells() {
+        return winnerCells;
     }
 
     public void restart() {

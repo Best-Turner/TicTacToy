@@ -11,13 +11,12 @@ import javax.swing.*;
 public class GameController {
     private final TicTacToyGame game;
     private final TicTacToyGUI gui;
-    private final TicTacToyAI toyAI;
+
     private Logger logger = LogManager.getLogger(GameController.class);
 
-    public GameController(TicTacToyGame game, TicTacToyGUI gui, TicTacToyAI toyAI) {
+    public GameController(TicTacToyGame game, TicTacToyGUI gui) {
         this.game = game;
         this.gui = gui;
-        this.toyAI = toyAI;
     }
 
     public void initializeGame() {
@@ -31,9 +30,14 @@ public class GameController {
         game.makeMove(row, col);
         gui.updateBoard(game.getBoard());
         if (game.checkWinner()) {
+            gui.paintWinningCells(game.getWinnerCells());
             JOptionPane.showMessageDialog(gui.getFrame(), "Игрок " + game.getCurrentPlayer() + " выйграл");
-            game.restart();
-            gui.restart();
+            restartGame();
+            return false;
+        } else if (game.areAllCellsFilled()) {
+            gui.paintAllCellsRandomColor();
+            JOptionPane.showMessageDialog(gui.getFrame(), "Ничья");
+            restartGame();
             return false;
         } else {
             logger.debug("Смена игрока {}", game.getCurrentPlayer());
@@ -41,5 +45,10 @@ public class GameController {
             logger.debug("Текущий игрок {}", game.getCurrentPlayer());
             return true;
         }
+    }
+
+    private void restartGame() {
+        game.restart();
+        gui.restart();
     }
 }

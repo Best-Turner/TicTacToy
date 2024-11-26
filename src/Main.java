@@ -17,8 +17,8 @@ public class Main {
         TicTacToyAI toyAI = new TicTacToyAISimpleImpl(game);
         TicTacToyGUI gui = new TicTacToyGUI(null, toyAI);
 
-        GameController controller = new GameController(game, gui, toyAI);
+        GameController controller = new GameController(game, gui);
         gui.setController(controller);
-            controller.initializeGame();
+        controller.initializeGame();
     }
 }
