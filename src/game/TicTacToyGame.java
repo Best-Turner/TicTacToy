@@ -30,7 +30,7 @@ public class TicTacToyGame {
     }
 
 
-    private boolean ifEmptyCells(int row, int col) {
+    public boolean ifEmptyCells(int row, int col) {
         logger.debug("Проверка ячейки {}, {}", row, col);
         return board[row][col].equals(EMPTY);
     }

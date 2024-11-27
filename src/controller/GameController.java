@@ -1,7 +1,6 @@
 package controller;
 
 import GUI.TicTacToyGUI;
-import game.AI.TicTacToyAI;
 import game.TicTacToyGame;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,8 +26,12 @@ public class GameController {
 
     public boolean handlePlayerMove(int row, int col) {
         logger.debug("Игрок {} делает ход", game.getCurrentPlayer());
+        if (!game.ifEmptyCells(row, col)) {
+            return false;
+        }
         game.makeMove(row, col);
         gui.updateBoard(game.getBoard());
+
         if (game.checkWinner()) {
             gui.paintWinningCells(game.getWinnerCells());
             JOptionPane.showMessageDialog(gui.getFrame(), "Игрок " + game.getCurrentPlayer() + " выйграл");

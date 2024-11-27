@@ -115,7 +115,7 @@ public class TicTacToyGUI {
     public void paintAllCellsRandomColor() {
         for (JButton[] row : buttons) {
             for (JButton col : row) {
-              col.setBackground(getColor());
+                col.setBackground(getColor());
             }
         }
         panel.repaint();
@@ -135,7 +135,6 @@ public class TicTacToyGUI {
         panel.repaint();
         logger.debug("Обновить панель");
     }
-
 
 
     public void setController(GameController controller) {
